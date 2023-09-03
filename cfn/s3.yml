@@ -20,3 +20,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${Prefix}-s3-bucket-${Env}
+Outputs:
+  ArnS3BucketWbt:
+    Description: ARN of the S3 Bucket
+    Value: !GetAtt S3BucketWbt.Arn
