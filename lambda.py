@@ -1,7 +1,7 @@
 import json
 import boto3
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 s3_client = boto3.client('s3')
 
@@ -13,6 +13,13 @@ def lambda_handler(event, context):
   # Download CSV file from S3
   response = s3_client.get_object(Bucket=bucket_name, Key=object_key)
   csv_data = response['Body'].read().decode('utf-8').splitlines()
+
+  kinesis_client = boto3.client('kinesis')
+  
+  # DynamoDB table to store county statistics
+  dynamodb_table_name = 'wbt-e-dynamodb-dev'
+  DYNAMO = boto3.resource('dynamodb')
+  table = DYNAMO.Table(dynamodb_table_name)
 
   # Process date for each row
   for row in csv.reader(csv_data):
@@ -31,11 +38,8 @@ def lambda_handler(event, context):
     # Add timestamp column with the current datetime
     timestamp = datetime.now().isoformat()
 
-    stream_name = 'wbt-e-kds-dev' # Name of stream that is created at kds.yml # TODO
+    stream_name = 'wbt-e-kds-dev'
     partition_key = 'partition-key' # We have just one shard in this project
-
-    # Create instance
-    kinesis_client = boto3.client('kinesis')
 
     # Create a dictionary with the data you want to publish to Kinesis
     data = {
@@ -60,7 +64,50 @@ def lambda_handler(event, context):
       PartitionKey = partition_key
     )
 
-    print('Published to Kinesis Data Stream. SequenceNumber: {}'.format(response['SequenceNumber']))
+  # Calculate current time and time 5 minutes ago
+  current_time = datetime.utcnow()
+  five_minutes_ago = current_time - timedelta(minutes = 5)
+  
+  # Get data from the Kinesis stream for the past 5 minutes
+  shard_iterator = kinesis_client.get_shard_iterator(
+    StreamName = 'wbt-e-kds-dev',
+    ShardId = 'shardId-000000000000',
+    ShardIteratorType = 'AT_TIMESTAMP',
+    Timestamp = five_minutes_ago
+  )['ShardIterator']
+
+  print(f'shard_iterator ', shard_iterator)
+
+  # Read records from the shard
+  records = []
+  response = kinesis_client.get_records(
+    ShardIterator = shard_iterator,
+    Limit = 100
+  )
+  records.extend(response['Records'])
+  
+  print(f'records', records)
+
+  # Aggregate values in the County field
+  county_counts = {}
+  for record in records:
+    data = json.loads(record['Data'])
+    county = data.get('County')
+    if county:
+      county_counts[county] = county_counts.get(county, 0) + 1
+
+  print(f'county_counts', county_counts)
+
+  # Save the aggregation results to DynamoDB
+  table = DYNAMO.Table(dynamodb_table_name)
+  with table.batch_writer() as batch:
+    for county, count in county_counts.items():
+      batch.put_item(
+        Item = {
+          'County': county,
+          'Count': count
+          }
+        )
 
   return {
     'statusCode': 200,
