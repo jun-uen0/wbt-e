@@ -15,3 +15,8 @@ Parameters:
   Env:
     Type: String
     Default: dev
+Resources:
+  S3BucketWbt:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${Prefix}-s3-bucket-${Env}
