@@ -61,3 +61,27 @@ class TestPublishDataToKinesis(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main()
+
+class TestAggregateCountyData(unittest.TestCase):
+
+  def test_aggregate_county_data(self):
+    # Sample records with JSON data
+    records = [
+      {'Data': '{"County": "A"}'},
+      {'Data': '{"County": "B"}'},
+      {'Data': '{"County": "A"}'},
+      {'Data': '{"Other": "Data"}'},  # This record should be ignored
+      {'Data': '{"County": "B"}'},
+    ]
+
+    # Call the function under test
+    result = app.aggregate_county_data(records)
+
+    # Expected county counts
+    expected_counts = {'A': 2, 'B': 2}
+
+    # Assert that the function returns the correct county counts
+    self.assertEqual(result, expected_counts)
+
+if __name__ == '__main__':
+  unittest.main()
