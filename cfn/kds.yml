@@ -15,3 +15,12 @@ Parameters:
   Env:
     Type: String
     Default: dev
+Resources:
+  KdsWbt:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub ${Prefix}-kds-${Env}
+      RetentionPeriodHours: 24 # Default
+      ShardCount: 1
+      StreamModeDetails:
+        StreamMode: PROVISIONED
