@@ -85,3 +85,41 @@ class TestAggregateCountyData(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main()
+
+# class TestUpdateDynamoDB(unittest.TestCase):
+
+#   @patch('hello_world.app.DYNAMO.Table')
+#   def test_update_dynamodb(self, mock_dynamodb_table):
+#     # Set up the mock
+#     table_name = 'test-table'
+#     county_counts = {
+#       'CountyA': 10,
+#       'CountyB': 5,
+#       'CountyC': 3
+#     }
+
+#     # Create a mock for the DynamoDB table
+#     mock_table_instance = Mock()
+#     mock_dynamodb_table.return_value = mock_table_instance
+
+#     # Mock the batch_writer() method of the DynamoDB table
+#     mock_batch_writer = Mock()
+#     mock_table_instance.batch_writer.return_value = mock_batch_writer
+
+#     # Call the function under test
+#     app.update_dynamodb(table_name, county_counts)
+
+#     # Ensure that the batch_writer() method of the mock was called correctly
+#     mock_table_instance.batch_writer.assert_called_once()
+
+#     # Ensure that the batch_writer() method of the mock was called with the correct arguments
+#     expected_items = [
+#       {'County': 'CountyA', 'Count': 10},
+#       {'County': 'CountyB', 'Count': 5},
+#       {'County': 'CountyC', 'Count': 3}
+#     ]
+
+#     mock_batch_writer.put_item.assert_called_once_with(Item=expected_items)
+
+# if __name__ == '__main__':
+#   unittest.main()
