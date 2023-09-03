@@ -15,3 +15,25 @@ Parameters:
   Env:
     Type: String
     Default: dev
+Resources:
+  DynamoDbWbt:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${Prefix}-dynamodb-${Env}
+      AttributeDefinitions:
+        - AttributeName: SensorID
+          AttributeType: S # String
+        - AttributeName: Timestamp
+          AttributeType: N # Number
+      KeySchema:
+        - AttributeName: SensorID
+          KeyType: HASH
+        - AttributeName: Timestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+Outputs:
+  ArnDynamoDbWbt:
+    Description: ARN of the DynamoDB table
+    Value: !GetAtt DynamoDbWbt.Arn
