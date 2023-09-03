@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Kinesis Date Stream
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Prefix and Env
+        Parameters:
+          - Prefix
+          - Env
+Parameters:
+  Prefix:
+    Type: String
+    Default: wbt-e
+  Env:
+    Type: String
+    Default: dev
