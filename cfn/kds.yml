@@ -24,3 +24,7 @@ Resources:
       ShardCount: 1
       StreamModeDetails:
         StreamMode: PROVISIONED
+Outputs:
+  KinesisDataStreamARN:
+    Description: ARN of the Kinesis data stream
+    Value: !GetAtt KdsWbt.Arn
