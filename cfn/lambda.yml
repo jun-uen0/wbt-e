@@ -45,3 +45,7 @@ Resources:
       Code:
         ZipFile: |
           print('write code here')
+Outputs:
+  ArnLambdaWbt:
+    Description: ARN of the Lambda
+    Value: !GetAtt LambdaWbt.Arn
