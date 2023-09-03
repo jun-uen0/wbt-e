@@ -25,3 +25,39 @@ class TestDownloadDataFromS3(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main()
+
+class TestPublishDataToKinesis(unittest.TestCase):
+
+  @patch('hello_world.app.kinesis_client')
+  def test_publish_data_to_kinesis(self, mock_kinesis_client):
+    # Set up the mock
+    stream_name = 'test-stream'
+    data = {
+      'key1': 'value1',
+      'key2': 'value2'
+    }
+
+    # Convert the data dictionary to a JSON string
+    json_data = json.dumps(data)
+
+    # Define the expected response from the mock
+    expected_response = {'ResponseMetadata': {'HTTPStatusCode': 200}}
+
+    # Configure the mock's put_record method to return the expected response
+    mock_kinesis_client.put_record.return_value = expected_response
+
+    # Call the function under test
+    response = app.publish_data_to_kinesis(stream_name, data)
+
+    # Assert that the mock's put_record method was called correctly
+    mock_kinesis_client.put_record.assert_called_once_with(
+      StreamName=stream_name,
+      Data=json_data,  # Use the JSON string here
+      PartitionKey='partition-key'
+    )
+
+    # Assert the function's return value
+    self.assertEqual(response, expected_response)
+
+if __name__ == '__main__':
+  unittest.main()
