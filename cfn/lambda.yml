@@ -35,8 +35,8 @@ Resources:
     Properties:
       FunctionName: !Sub ${Prefix}-lambda-${Env}
       Runtime: "python3.10"
-      MemorySize: "128"
-      Timeout: "5"
+      MemorySize: "1315"
+      Timeout: "300"
       Role: !GetAtt RoleLambdaWbt.Arn
       Handler: index.lambda_handler
       Architectures: ["x86_64"]
