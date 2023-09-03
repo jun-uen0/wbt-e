@@ -15,3 +15,33 @@ Parameters:
   Env:
     Type: String
     Default: dev
+Resources:
+  RoleLambdaWbt:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Prefix}-role-lambda-${Env}
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  LambdaWbt:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Prefix}-lambda-${Env}
+      Runtime: "python3.10"
+      MemorySize: "128"
+      Timeout: "5"
+      Role: !GetAtt RoleLambdaWbt.Arn
+      Handler: index.lambda_handler
+      Architectures: ["x86_64"]
+      EphemeralStorage:
+        Size: "512"
+      Code:
+        ZipFile: |
+          print('write code here')
