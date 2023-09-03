@@ -1,6 +1,7 @@
 import json
 import boto3
 import csv
+from datetime import datetime
 
 s3_client = boto3.client('s3')
 
@@ -27,12 +28,39 @@ def lambda_handler(event, context):
     latitude = row[9]
     location = row[10]
 
-    print(f"Waterbody Name: {waterbody_name}")
-    print(f"Fish Species: {fish_species}")
+    # Add timestamp column with the current datetime
+    timestamp = datetime.now().isoformat()
 
-  # Next Step goes here:
-  # Data processing
-  # Kinesis
+    stream_name = 'wbt-e-kds-dev' # Name of stream that is created at kds.yml # TODO
+    partition_key = 'partition-key' # We have just one shard in this project
+
+    # Create instance
+    kinesis_client = boto3.client('kinesis')
+
+    # Create a dictionary with the data you want to publish to Kinesis
+    data = {
+      'WaterbodyName': waterbody_name,
+      'FishSpecies': fish_species,
+      'Comments': comments,
+      'RegulationsLink': regulations_link,
+      'County': county,
+      'AccessTypes': access_types,
+      'AccessOwner': access_owner,
+      'WaterbodyInfo': waterbody_info,
+      'Longitude': longitude,
+      'Latitude': latitude,
+      'Location': location,
+      'Timestamp': timestamp  # Add the timestamp column
+    }
+
+    # Publish data to Kinesis
+    response = kinesis_client.put_record(
+      StreamName = stream_name,
+      Data = json.dumps(data), # Convert Data to Json style
+      PartitionKey = partition_key
+    )
+
+    print('Published to Kinesis Data Stream. SequenceNumber: {}'.format(response['SequenceNumber']))
 
   return {
     'statusCode': 200,
