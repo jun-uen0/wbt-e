@@ -123,8 +123,17 @@ if [ "$1" == "e2e" ]; then
   # Run locally
   sam local invoke
   # Fetch data from DynamoDB
-  # Compare data
-  # Cleanup everything
+  ../scripts/e2e.sh
+  # Clean
+  rm hello_world/app.py
+  mv hello_world/app_bk.py hello_world/app.py
+  echo "deleting stacks..."
+  aws s3 rm s3://wbt-e-s3-bucket-e2e --recursive
+  aws s3 rb s3://wbt-e-s3-bucket-e2e --force
+  aws cloudformation delete-stack --stack-name s3-e2e
+  aws cloudformation delete-stack --stack-name kds-e2e
+  aws cloudformation delete-stack --stack-name dynamodb-e2e
+  aws cloudformation delete-stack --stack-name lambda-e2e
 fi
 
 # If Production deployment, ask about running stream.sh
