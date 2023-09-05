@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Kinesis Date Stream
+Description: S3
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
