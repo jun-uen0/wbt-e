@@ -1,3 +1,5 @@
 **/.DS_Store
 __pycache__/
-**/.aws-sam
+/lambda/.aws-sam
+/lambda/.pytest_cache
+/lambda/*.toml
