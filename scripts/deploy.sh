@@ -116,11 +116,15 @@ python3 -m pytest
 # Deploy Lambda
 sam deploy \
   --stack-name lambda-${env} \
-  --s3-prefix ${env} \
+  --s3-prefix ${env}
 
 # If e2e test, fetch data and confirm it's correct and then destory all AWS services created
 if [ "$1" == "e2e" ]; then
-  # code comes here
+  # Run locally
+  sam local invoke
+  # Fetch data from DynamoDB
+  # Compare data
+  # Cleanup everything
 fi
 
 # If Production deployment, ask about running stream.sh
