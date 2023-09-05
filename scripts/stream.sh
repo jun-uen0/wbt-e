@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Change current diretory to `scripts/`
 cd $(dirname $0)
 cd ../lambda/

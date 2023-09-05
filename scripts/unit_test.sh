@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Check Python version
 python_version=$(python3 --version 2>&1 | awk '/Python/{print $2}')
 required_python_version="3.9.0"  # Minimum required Python version
