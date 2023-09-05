@@ -50,8 +50,10 @@ aws cloudformation deploy \
   --s3-prefix ${env} \
   --parameter-overrides Env=${env}
 
-echo "Update file (csv) for e2e testing to S3 bucket created"
-aws s3 cp ${testfile_path} s3://wbt-e-s3-bucket-e2e/
+if [ "$1" == "e2e" ]; then
+  echo "Update file (csv) for e2e testing to S3 bucket created"
+  aws s3 cp ${testfile_path} s3://wbt-e-s3-bucket-e2e/
+fi
 
 # Deploy Kinesis Data Stream
 echo "Creating stack kds-${env}"
