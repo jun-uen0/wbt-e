@@ -42,10 +42,10 @@ def update_dynamodb(table_name, county_counts):
       )
 
 def lambda_handler(event, context):
-  bucket_name = 'wbt-e-s3-bucket-dev'
-  object_key = 'recommended-fishing-rivers-and-streams-1.csv'
-  stream_name = 'wbt-e-kds-dev'
-  dynamodb_table_name = 'wbt-e-dynamodb-dev'
+  bucket_name = 'wbt-e-s3-bucket-e2e'
+  object_key = 'test.csv'
+  stream_name = 'wbt-e-kds-e2e'
+  dynamodb_table_name = 'wbt-e-dynamodb-e2e'
 
   csv_data = download_data_from_s3(bucket_name, object_key)
 
