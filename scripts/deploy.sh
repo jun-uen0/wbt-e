@@ -98,8 +98,14 @@ aws cloudformation deploy \
   --s3-prefix ${env} \
   --parameter-overrides Env=${env}
 
-echo "Deploying data streaming application"
 cd ../lambda
+
+# If e2e test, build and deploy e2e application
+if [ "$1" == "e2e" ]; then
+  echo "changing application code for e2e test"
+  mv hello_world/app.py hello_world/app_bk.py
+  cp tests/e2e/e2e.py hello_world/app.py
+fi
 
 # Build Lambda
 sam build
@@ -111,3 +117,10 @@ python3 -m pytest
 sam deploy \
   --stack-name lambda-${env} \
   --s3-prefix ${env} \
+
+# If e2e test, fetch data and confirm it's correct and then destory all AWS services created
+if [ "$1" == "e2e" ]; then
+  # code comes here
+fi
+
+# If Production deployment, ask about running stream.sh
