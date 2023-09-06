@@ -54,7 +54,7 @@ check_jq
 
 echo "All checks passed."
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 cd ../lambda
 
 # Fetch data from DynamoDB, County = Delaware

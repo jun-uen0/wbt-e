@@ -3,7 +3,7 @@
 set -e
 
 # Change current diretory to `scripts/`
-cd $(dirname $0)
+cd "$(dirname "$0")"
 cd ../lambda/
 
 # Check if SAM version is >= required_sam_version

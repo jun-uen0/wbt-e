@@ -22,7 +22,7 @@ for ((i=0; i<3; i++)); do
 done
 
 # Change current diretory to `scripts/`
-cd $(dirname $0)
+cd "$(dirname "$0")"
 cd ../lambda/
 
 # Excute unit test

@@ -22,7 +22,7 @@ case "$1" in "dev" | "e2e" | "prod" ) ;; * )
 esac
 
 if [ "$1" == "prod" ]; then
-  read -p "This command will deploy to the production environment. Are you sure? (y/N): " yn
+  read -r -p "This command will deploy to the production environment. Are you sure? (y/N): " yn
   case "$yn" in [yY]*) ;; *) echo "Exiting" ; exit ;; esac
 fi
 
@@ -66,16 +66,16 @@ env=$1
 testfile_path=../lambda/tests/e2e/test-files/test.csv
 
 # Change current diretory to `cfn/`
-cd $(dirname $0)
+cd "$(dirname "$0")"
 cd ../cfn/
 
 # Deploy S3
 echo "Creating stack s3-${env}"
 aws cloudformation deploy \
   --template-file s3.yml \
-  --stack-name s3-${env} \
-  --s3-prefix ${env} \
-  --parameter-overrides Env=${env}
+  --stack-name s3-"${env}" \
+  --s3-prefix "${env}" \
+  --parameter-overrides Env="${env}"
 
 if [ "$1" == "e2e" ]; then
   echo "Update file (csv) for e2e testing to S3 bucket created"
@@ -86,17 +86,17 @@ fi
 echo "Creating stack kds-${env}"
 aws cloudformation deploy \
   --template-file kds.yml \
-  --stack-name kds-${env} \
-  --s3-prefix ${env} \
-  --parameter-overrides Env=${env}
+  --stack-name kds-"${env}" \
+  --s3-prefix "${env}" \
+  --parameter-overrides Env="${env}"
 
 # Deploy DynamoDB
 echo "Creating stack dynamodb-${env}"
 aws cloudformation deploy \
   --template-file dynamodb.yml \
-  --stack-name dynamodb-${env} \
-  --s3-prefix ${env} \
-  --parameter-overrides Env=${env}
+  --stack-name dynamodb-"${env}" \
+  --s3-prefix "${env}" \
+  --parameter-overrides Env="${env}"
 
 cd ../lambda
 
@@ -115,8 +115,8 @@ python3 -m pytest
 
 # Deploy Lambda
 sam deploy \
-  --stack-name lambda-${env} \
-  --s3-prefix ${env}
+  --stack-name lambda-"${env}" \
+  --s3-prefix "${env}"
 
 # If e2e test, fetch data and confirm it's correct and then destory all AWS services created
 if [ "$1" == "e2e" ]; then
@@ -138,6 +138,6 @@ fi
 
 # If Production deployment, ask about running stream.sh
 if [ "$1" == "prod" ]; then
-  read -p "? (y/N): " yn
+  read -r -p "????? (y/N): " yn
   case "$yn" in [yY]*) ;; *) echo "Exiting" ; exit ;; esac
 fi
