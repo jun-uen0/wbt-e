@@ -1,4 +1,7 @@
 # CI/CD Pipeline for Sensor Data Collection
+
+![diagram](./diagram/diagram.jpeg)
+
 This README provides an overview of the CI/CD pipeline created to collect sensor data in real-time using AWS managed services.
 
 Challenge Statement
@@ -32,7 +35,7 @@ chmod 755 ./scripts/<file name>.sh
 
 ## Deliverables
 ### Architecture
-The architecture diagram can be found in the `diagram/` directory, named `diagram`
+The architecture diagram can be found in the `diagram/` directory, named `diagram.jpeg`
 
 ### Implementation
 The application implementation code is located in the `lambda/` directory. For this exercise, AWS SAM was used, and the production environment code is in `lambda/hello_world/`.
