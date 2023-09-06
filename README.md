@@ -59,7 +59,7 @@ The **Lambda** function is in the `lambda/` directory as `template.yml`.
 `build.sh`, `unit_test.sh`, `deploy.sh`, and `stream.sh` scripts are in the `scripts/` directory at the root of the submission. Unit tests can be executed using `scripts/unit_tests.sh`.
 
 ## Time Tracking
-**Total hours spent: Approximately <u>19 hours</u>.**
+**Total hours spent: Approximately <u>20 hours</u>.**
 
 0:30: Planning and task list creation<br>
 1:00: Creating Kinesis Data Streams and DynamoDB (IaC)<br>
@@ -70,4 +70,4 @@ The **Lambda** function is in the `lambda/` directory as `template.yml`.
 1:30: End-to-end testing
 2:30: Scripting (build, deploy, stream, etc.)<br>
 4:00: E2E testing and other adjustments<br>
-2:30: Diagram and README creation<br>
+3:30: Diagram and README creation<br>
