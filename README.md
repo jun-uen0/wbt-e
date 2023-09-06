@@ -20,6 +20,40 @@ Docker: Version 20 or higher<br>
 Homebrew: Version 4.1.8<br>
 
 ## Operation
+### Create custom IAM policy
+Please create IAM policy with json below
+and create attach the IAM policy to your IAM user
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "GetObjectS3BucketWbtDev",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::wbt-e-s3-bucket-dev/*"
+    },
+    {
+      "Sid": "kinesisPutRecordWbtDev",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:*"
+      ],
+      "Resource": "arn:aws:kinesis:ap-northeast-1:<YOUR AWS ACCOUNT>:stream/wbt-e-kds-dev"
+    },
+    {
+      "Sid": "Statement1",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:BatchWriteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:ap-northeast-1:<YOUR AWS ACCOUNT>:table/*"
+    }
+  ]
+}
+```
+
 ### Use chmod 755 <filename> to grant permissions to the all scripts.
 ```sh
 # Make sure your at root directory
@@ -57,6 +91,10 @@ The **Lambda** function is in the `lambda/` directory as `template.yml`.
 <u>**b. Provide bash scripts**</u>
 
 `build.sh`, `unit_test.sh`, `deploy.sh`, and `stream.sh` scripts are in the `scripts/` directory at the root of the submission. Unit tests can be executed using `scripts/unit_tests.sh`.
+
+## ToDo
+Debug unit test `TestUpdateDynamoDB`(./lambda/hello_world/tests/unit/test_hundler.py #L90)
+
 
 ## Time Tracking
 **Total hours spent: Approximately <u>20 hours</u>.**
