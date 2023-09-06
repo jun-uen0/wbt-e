@@ -44,16 +44,22 @@ for ((i=0; i<3; i++)); do
   fi
 done
 
+read -p "Run application indefinitely? (y/N):" yn
+case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
+
 read -p "Did you build application? (y/N):" yn
 case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
 
 read -p "Did you deploy application to Lambda? (y/N):" yn
 case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
 
+read -p "Did you uplaod dataset data (csv file) to S3 bucket? (y/N):" yn
+case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
+
 read -p "Did you deploy CloudFormation stacks of DynamoDB, Kinesis Data Steam, and S3? (y/N):" yn
 case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
 
-read -p "Run application indefinitely? (y/N):" yn
+read -p "Run application indefinitely. Are you sure? (y/N):" yn
 case "$yn" in [yY]*) ;; *) echo "Exit" ; exit ;; esac
 
 # Start streaming data indefinitely
