@@ -65,7 +65,7 @@ done
 env=$1
 testfile_path=../lambda/tests/e2e/test-files/test.csv
 
-# Change current diretory to `scripts/`
+# Change current diretory to `cfn/`
 cd $(dirname $0)
 cd ../cfn/
 
@@ -137,3 +137,7 @@ if [ "$1" == "e2e" ]; then
 fi
 
 # If Production deployment, ask about running stream.sh
+if [ "$1" == "prod" ]; then
+  read -p "? (y/N): " yn
+  case "$yn" in [yY]*) ;; *) echo "Exiting" ; exit ;; esac
+fi
