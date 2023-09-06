@@ -143,10 +143,5 @@ fi
 
 # If Production deployment, ask about running stream.sh
 if [ "$1" == "prod" ]; then
-	read -r -p "Run streaming ? (y/N): " yn
-	case "$yn" in [yY]*) ;; *)
-		echo "Exiting"
-		exit
-		;;
-	esac
+	../scripts/deploy.sh
 fi
