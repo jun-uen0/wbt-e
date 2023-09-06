@@ -13,7 +13,7 @@
       "Action": [
         "kinesis:*"
       ],
-      "Resource": "arn:aws:kinesis:ap-northeast-1:311575258506:stream/wbt-e-kds-dev"
+      "Resource": "arn:aws:kinesis:ap-northeast-1:<YOUR AWS ACCOUNT>:stream/wbt-e-kds-dev"
     },
     {
       "Sid": "Statement1",
@@ -21,7 +21,7 @@
       "Action": [
         "dynamodb:BatchWriteItem"
       ],
-      "Resource": "arn:aws:dynamodb:ap-northeast-1:311575258506:table/*"
+      "Resource": "arn:aws:dynamodb:ap-northeast-1:<YOUR AWS ACCOUNT>:table/*"
     }
   ]
 }
